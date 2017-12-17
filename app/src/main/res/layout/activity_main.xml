@@ -55,6 +55,30 @@
             android:text="3"
             app:layout_constraintLeft_toLeftOf="@id/btn_number_two" />
 
+        <Button
+            android:id="@+id/btn_plus"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:text="+"
+            app:layout_constraintLeft_toLeftOf="@id/btn_number_three" />
+
+        <Button
+            android:id="@+id/btn_enter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:text="="
+            app:layout_constraintLeft_toLeftOf="@id/btn_plus" />
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:text="C"
+            app:layout_constraintLeft_toLeftOf="@id/btn_enter" />
+
     </LinearLayout>
 
 

@@ -14,6 +14,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_one;
     private Button btn_two;
     private Button btn_three;
+    private Button btn_plus;
+    private Button btn_enter;
+    private Button btn_clear;
 
 
     @Override
@@ -49,6 +52,46 @@ public class MainActivity extends AppCompatActivity {
                 displayView(tv_display, mResultString);
             }
         });
+
+        btn_plus = (Button) findViewById(R.id.btn_plus);
+        btn_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mResultString += "+";
+                displayView(tv_display, mResultString);
+            }
+        });
+
+        btn_enter = (Button) findViewById(R.id.btn_enter);
+        btn_enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mResultString = "Berechnung fehlt noch...";
+                displayView(tv_display, mResultString);
+                mResultString = "";
+            }
+        });
+
+        btn_clear = (Button) findViewById(R.id.btn_clear);
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mResultString.length() > 0) {
+                    mResultString = mResultString.substring(0, mResultString.length() - 1);
+                }
+                displayView(tv_display, mResultString);
+            }
+        });
+
+        btn_clear.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mResultString = "";
+                displayView(tv_display, mResultString);
+                return true;
+            }
+        });
+
 
     }
 
