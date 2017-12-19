@@ -15,13 +15,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String mResultString = "";
     private TextView tv_display;
 
-    private Button btn_one;
-    private Button btn_two;
-    private Button btn_three;
-    private Button btn_plus;
-    private Button btn_enter;
-    private Button btn_clear;
-
     Symbols symbols = new Symbols();
 
     @Override
@@ -31,12 +24,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         tv_display = (TextView) findViewById(R.id.tv_display);
 
-        btn_one = (Button) findViewById(R.id.btn_number_one);
-        btn_two = (Button) findViewById(R.id.btn_number_two);
-        btn_three = (Button) findViewById(R.id.btn_number_three);
-        btn_plus = (Button) findViewById(R.id.btn_plus);
-        btn_enter = (Button) findViewById(R.id.btn_enter);
-        btn_clear = (Button) findViewById(R.id.btn_clear);
+        Button btn_one = (Button) findViewById(R.id.btn_number_one);
+        Button btn_two = (Button) findViewById(R.id.btn_number_two);
+        Button btn_three = (Button) findViewById(R.id.btn_number_three);
+        Button btn_plus = (Button) findViewById(R.id.btn_plus);
+        Button btn_enter = (Button) findViewById(R.id.btn_enter);
+        Button btn_clear = (Button) findViewById(R.id.btn_clear);
 
 
         btn_one.setOnClickListener(this);
@@ -60,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void displayView(TextView v, String mResultString) {
         v.setText(mResultString);
     }
+
 
     //Hier landen alle Click-Events, die auf irgendeinen Button in der View erfolgen
     @Override
