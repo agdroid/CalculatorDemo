@@ -9,7 +9,8 @@ import android.widget.TextView;
 import org.javia.arity.Symbols;
 import org.javia.arity.SyntaxException;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String mResultString = "";
     private TextView tv_display;
@@ -31,65 +32,20 @@ public class MainActivity extends AppCompatActivity {
         tv_display = (TextView) findViewById(R.id.tv_display);
 
         btn_one = (Button) findViewById(R.id.btn_number_one);
-        btn_one.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mResultString += "1";
-                displayView(tv_display, mResultString);
-            }
-        });
-
         btn_two = (Button) findViewById(R.id.btn_number_two);
-        btn_two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mResultString += "2";
-                displayView(tv_display, mResultString);
-            }
-        });
-
         btn_three = (Button) findViewById(R.id.btn_number_three);
-        btn_three.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mResultString += "3";
-                displayView(tv_display, mResultString);
-            }
-        });
-
         btn_plus = (Button) findViewById(R.id.btn_plus);
-        btn_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mResultString += "+";
-                displayView(tv_display, mResultString);
-            }
-        });
-
         btn_enter = (Button) findViewById(R.id.btn_enter);
-        btn_enter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Double result = symbols.eval(mResultString);
-                    mResultString = Double.toString(result);
-                } catch (SyntaxException e) {
-                    e.printStackTrace();
-                }
-                displayView(tv_display, mResultString);
-            }
-        });
-
         btn_clear = (Button) findViewById(R.id.btn_clear);
-        btn_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mResultString.length() > 0) {
-                    mResultString = mResultString.substring(0, mResultString.length() - 1);
-                }
-                displayView(tv_display, mResultString);
-            }
-        });
+
+
+        btn_one.setOnClickListener(this);
+        btn_two.setOnClickListener(this);
+        btn_three.setOnClickListener(this);
+        btn_plus.setOnClickListener(this);
+        btn_enter.setOnClickListener(this);
+        btn_clear.setOnClickListener(this);
+
 
         btn_clear.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -99,11 +55,44 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 
     private void displayView(TextView v, String mResultString) {
         v.setText(mResultString);
+    }
+
+    //Hier landen alle Click-Events, die auf irgendeinen Button in der View erfolgen
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_number_one:
+                mResultString += "1";
+                break;
+            case R.id.btn_number_two:
+                mResultString += "2";
+                break;
+            case R.id.btn_number_three:
+                mResultString += "3";
+                break;
+            case R.id.btn_plus:
+                mResultString += "+";
+                break;
+            case R.id.btn_enter:
+                try {
+                    Double result = symbols.eval(mResultString);
+                    mResultString = Double.toString(result);
+                } catch (SyntaxException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.btn_clear:
+                if (mResultString.length() > 0) {
+                    mResultString = mResultString.substring(0, mResultString.length() - 1);
+                }
+                break;
+
+        }
+        displayView(tv_display, mResultString);
+
     }
 }
