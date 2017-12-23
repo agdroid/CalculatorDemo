@@ -5,17 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.javia.arity.Symbols;
-import org.javia.arity.SyntaxException;
+public class MainActivity extends AppCompatActivity implements
+        CalculatorContract.PublishToView,
+        View.OnClickListener {
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private String mResultString = "";
-    private TextView tv_display;
-
-    Symbols symbols = new Symbols();
+    TextView tv_display;
+    CalculatorPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btn_enter = (Button) findViewById(R.id.btn_enter);
         Button btn_clear = (Button) findViewById(R.id.btn_clear);
 
-
         btn_one.setOnClickListener(this);
         btn_two.setOnClickListener(this);
         btn_three.setOnClickListener(this);
@@ -39,54 +35,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_enter.setOnClickListener(this);
         btn_clear.setOnClickListener(this);
 
-
         btn_clear.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mResultString = "";
-                displayView(tv_display, mResultString);
+                presenter.onDeleteLongClick();
                 return true;
             }
         });
-    }
 
-    private void displayView(TextView v, String mResultString) {
-        v.setText(mResultString);
+        //"this" funktioniert, weil die MainActivity "CalculatorContract.PublishToView"
+        //implementiert und damit auch vom Type publishedResult (CalculatorContract.PublishToView) ist.
+        presenter = new CalculatorPresenter(this);
     }
-
 
     //Hier landen alle Click-Events, die auf irgendeinen Button in der View erfolgen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_number_one:
-                mResultString += "1";
+                presenter.onNumberClick(1);
                 break;
             case R.id.btn_number_two:
-                mResultString += "2";
+                presenter.onNumberClick(2);
                 break;
             case R.id.btn_number_three:
-                mResultString += "3";
+                presenter.onNumberClick(3);
                 break;
             case R.id.btn_plus:
-                mResultString += "+";
+                presenter.onOperatorClick("+");
                 break;
             case R.id.btn_enter:
-                try {
-                    Double result = symbols.eval(mResultString);
-                    mResultString = Double.toString(result);
-                } catch (SyntaxException e) {
-                    e.printStackTrace();
-                }
+                presenter.onEvaluateClick();
                 break;
             case R.id.btn_clear:
-                if (mResultString.length() > 0) {
-                    mResultString = mResultString.substring(0, mResultString.length() - 1);
-                }
+                presenter.onDeleteShortClick();
                 break;
-
         }
-        displayView(tv_display, mResultString);
+    }
 
+
+    @Override
+    public void showResult(String result) {
+        tv_display.setText(result);
+    }
+
+    @Override
+    public void showToastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT);
     }
 }
