@@ -16,7 +16,7 @@ public interface CalculatorContract {
     //Übermittelt Click-Events von der View zum Presenter
     interface ForwardInteractionToPresenter {
         void onNumberClick(int number);
-        //void onDecimalClick();
+        void onDecimalClick();
         void onOperatorClick(String operator);
         void onEvaluateClick();
         void onDeleteShortClick();

@@ -5,7 +5,7 @@ import org.javia.arity.SyntaxException;
 
 /**
  * Created by andre on 20.12.2017.
- *
+ * <p>
  * Prüft auf korrekte Eingabewerte, berechnet den Ausdruck oder erzeugt Fehlermeldung
  */
 
@@ -106,6 +106,19 @@ public class Calculation {
             calculationResult.onExpressionChanged(currentExpression, true);
         }
     }
+
+
+    /**
+     * #5 Reaktion auf   void onDecimalClick();
+     * See type comment for appendOperator
+     */
+    public void appendDecimal() {
+        if (validateExpression(currentExpression)) {
+            currentExpression += ".";
+            calculationResult.onExpressionChanged(currentExpression, true);
+        }
+    }
+
 
     /**
      * #6 Reaktion auf  void onEvaluateClick();

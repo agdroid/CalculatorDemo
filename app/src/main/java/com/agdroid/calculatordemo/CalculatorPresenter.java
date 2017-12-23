@@ -30,6 +30,11 @@ public class CalculatorPresenter implements
     }
 
     @Override
+    public void onDecimalClick() {
+        calc.appendDecimal();
+    }
+
+    @Override
     public void onOperatorClick(String operator) {
         calc.appendOperator(operator);
     }

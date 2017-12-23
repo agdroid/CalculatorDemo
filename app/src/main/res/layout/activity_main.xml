@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="end"
-            android:text="560+327"
+            android:text=""
             android:textSize="30sp" />
 
     </HorizontalScrollView>
@@ -56,12 +56,20 @@
             app:layout_constraintLeft_toLeftOf="@id/btn_number_two" />
 
         <Button
+            android:id="@+id/btn_decimal"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:text="."
+            app:layout_constraintLeft_toLeftOf="@id/btn_number_three" />
+
+        <Button
             android:id="@+id/btn_plus"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginLeft="8dp"
             android:text="+"
-            app:layout_constraintLeft_toLeftOf="@id/btn_number_three" />
+            app:layout_constraintLeft_toLeftOf="@id/btn_decimal" />
 
         <Button
             android:id="@+id/btn_enter"
@@ -71,7 +79,7 @@
             android:text="="
             app:layout_constraintLeft_toLeftOf="@id/btn_plus" />
 
-        <Button
+                <Button
             android:id="@+id/btn_clear"
             android:layout_width="48dp"
             android:layout_height="48dp"

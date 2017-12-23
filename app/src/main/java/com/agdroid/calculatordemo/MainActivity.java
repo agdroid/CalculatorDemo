@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements
         Button btn_one = (Button) findViewById(R.id.btn_number_one);
         Button btn_two = (Button) findViewById(R.id.btn_number_two);
         Button btn_three = (Button) findViewById(R.id.btn_number_three);
+        Button btn_decimal = (Button) findViewById(R.id.btn_decimal);
         Button btn_plus = (Button) findViewById(R.id.btn_plus);
         Button btn_enter = (Button) findViewById(R.id.btn_enter);
         Button btn_clear = (Button) findViewById(R.id.btn_clear);
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements
         btn_one.setOnClickListener(this);
         btn_two.setOnClickListener(this);
         btn_three.setOnClickListener(this);
+        btn_decimal.setOnClickListener(this);
         btn_plus.setOnClickListener(this);
         btn_enter.setOnClickListener(this);
         btn_clear.setOnClickListener(this);
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.btn_number_three:
                 presenter.onNumberClick(3);
                 break;
+            case R.id.btn_decimal:
+                presenter.onDecimalClick();
+                break;
             case R.id.btn_plus:
                 presenter.onOperatorClick("+");
                 break;
@@ -81,6 +86,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void showToastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
