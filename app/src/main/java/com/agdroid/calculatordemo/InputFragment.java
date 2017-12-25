@@ -19,6 +19,14 @@ public class InputFragment extends Fragment implements View.OnClickListener {
 
     Button btn_one, btn_two, btn_three, btn_decimal, btn_plus, btn_enter, btn_clear;
 
+    public InputFragment() {
+        // Required empty public constructor
+    }
+
+    public static InputFragment newInstance(){
+        return new InputFragment();
+    }
+
     public void setPresenter (CalculatorContract.ForwardInteractionToPresenter fI) {
         this.forwardInteraction = fI;
     }

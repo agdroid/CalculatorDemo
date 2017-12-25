@@ -7,19 +7,18 @@
     android:orientation="vertical"
     tools:context="com.agdroid.calculatordemo.MainActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/frag_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.agdroid.calculatordemo.DisplayFragment"
         tools:layout="@layout/fragment_display"
         />
 
-    <fragment
+    <FrameLayout
         android:id="@+id/frag_input"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.agdroid.calculatordemo.InputFragment"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         tools:layout="@layout/fragment_input" />
 
 </LinearLayout>

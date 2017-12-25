@@ -18,6 +18,14 @@ public class DisplayFragment extends Fragment implements CalculatorContract.Publ
 
     private TextView tv_display;
 
+    public DisplayFragment() {
+        // Required empty public constructor
+    }
+
+    public static DisplayFragment newInstance() {
+        return new DisplayFragment();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_display, container, false);
@@ -35,4 +43,5 @@ public class DisplayFragment extends Fragment implements CalculatorContract.Publ
     public void showToastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
 }
