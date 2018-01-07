@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.agdroid.calculatordemo.DisplayFragment">
 
     <HorizontalScrollView
         android:id="@+id/scv_display"
+        style="@style/ScrollViewDisplay"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="144dp">
 
         <TextView
             android:id="@+id/tv_display"
+            style="@style/TextViewDisplay"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
-            android:layout_gravity="end"
-            android:text="123"
-            android:textSize="30sp" />
+            android:layout_gravity="center_vertical|end"
+            android:text="0.0" />
 
     </HorizontalScrollView>
 
-</LinearLayout>
+</RelativeLayout>
