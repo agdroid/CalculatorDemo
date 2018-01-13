@@ -65,6 +65,7 @@ public class InputFragment extends Fragment implements View.OnClickListener {
         btn_eight.setOnClickListener(this);
         btn_nine.setOnClickListener(this);
         btn_zero.setOnClickListener(this);
+        btn_decimal.setOnClickListener(this);
         btn_divide.setOnClickListener(this);
         btn_multiply.setOnClickListener(this);
         btn_subtrac.setOnClickListener(this);
