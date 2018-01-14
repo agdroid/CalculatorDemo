@@ -15,7 +15,7 @@ import android.widget.Button;
 
 public class InputFragment extends Fragment implements View.OnClickListener {
 
-    private CalculatorContract.ForwardInteractionToPresenter forwardInteraction;
+    private CalculatorContract.ForwardInputInteractionToPresenter forwardInteraction;
 
     Button btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine,
             btn_zero, btn_decimal, btn_divide, btn_multiply, btn_subtrac, btn_plus,
@@ -29,7 +29,7 @@ public class InputFragment extends Fragment implements View.OnClickListener {
         return new InputFragment();
     }
 
-    public void setPresenter (CalculatorContract.ForwardInteractionToPresenter fI) {
+    public void setPresenter (CalculatorContract.ForwardInputInteractionToPresenter fI) {
         this.forwardInteraction = fI;
     }
 

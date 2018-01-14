@@ -9,7 +9,7 @@
         android:id="@+id/scv_display"
         style="@style/ScrollViewDisplay"
         android:layout_width="match_parent"
-        android:layout_height="144dp">
+        android:layout_height="96dp">
 
         <TextView
             android:id="@+id/tv_display"
@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_vertical|end"
+            android:background="@color/colorAccent"
             android:text="0.0"
             tools:text="569+965"/>
 

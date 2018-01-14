@@ -13,8 +13,13 @@ public interface CalculatorContract {
         void showToastMessage(String message);
     }
 
-    //Übermittelt Click-Events von der View zum Presenter
-    interface ForwardInteractionToPresenter {
+    //Überträgt Informationen von der DisplayView zum Presenter
+    interface ForwardDisplayInteractionToPresenter {
+        void onRestartDisplay(String rowOne);
+    }
+
+    //Übermittelt Click-Events von der InputView zum Presenter
+    interface ForwardInputInteractionToPresenter {
         void onNumberClick(int number);
         void onDecimalClick();
         void onOperatorClick(String operator);

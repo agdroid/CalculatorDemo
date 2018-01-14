@@ -31,8 +31,12 @@ public class Calculation {
         symbols = new Symbols();
     }
 
+    public void setCurrentExpression(String currentExpression) {
+        Calculation.currentExpression = currentExpression;
+        calculationResult.onExpressionChanged(currentExpression, true);
+    }
 
-    /**
+/**
      * Die folgenden 6 Funktionen reagieren auf die 6 interfaces von CalculatorContract
      */
 

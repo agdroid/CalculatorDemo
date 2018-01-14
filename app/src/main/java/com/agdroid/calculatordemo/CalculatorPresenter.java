@@ -1,7 +1,5 @@
 package com.agdroid.calculatordemo;
 
-import android.view.View;
-
 /**
  * Created by andre on 20.12.2017.
  *
@@ -10,7 +8,8 @@ import android.view.View;
  */
 
 public class CalculatorPresenter implements
-        CalculatorContract.ForwardInteractionToPresenter,
+        CalculatorContract.ForwardInputInteractionToPresenter,
+        CalculatorContract.ForwardDisplayInteractionToPresenter,
         Calculation.CalculationResult {
 
     private CalculatorContract.PublishToView publishResult;
@@ -61,5 +60,10 @@ public class CalculatorPresenter implements
         } else {
             publishResult.showToastMessage(result);
         }
+    }
+
+    @Override
+    public void onRestartDisplay(String rowOne) {
+        calc.setCurrentExpression(rowOne);
     }
 }
