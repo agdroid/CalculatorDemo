@@ -36,7 +36,7 @@ public class Calculation {
         calculationResult.onExpressionChanged(currentExpression, true);
     }
 
-/**
+    /**
      * Die folgenden 6 Funktionen reagieren auf die 6 interfaces von CalculatorContract
      */
 
@@ -133,7 +133,7 @@ public class Calculation {
         if (validateExpression(currentExpression)) {
             try {
                 Double result = symbols.eval(currentExpression);
-                currentExpression = Double.toString(result);
+                currentExpression = formatExpression(Double.toString(result));
                 calculationResult.onExpressionChanged(currentExpression, true);
             } catch (SyntaxException e) {
                 calculationResult.onExpressionChanged("Invalid Input", false);
@@ -170,4 +170,14 @@ public class Calculation {
     }
 
 
+    // Formatiert das Ergebnis für die Ausgabe
+    private String formatExpression(String s) {
+        //Entfernung Dezimalpunkt bei ganzen Zahlen
+        double d = Double.valueOf(s);
+        int i = (int) d;
+        if (d - i == 0) {
+            s = Integer.toString(i);
+        }
+        return s;
+    }
 }
