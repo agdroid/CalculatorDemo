@@ -4,6 +4,7 @@ import org.javia.arity.Symbols;
 import org.javia.arity.SyntaxException;
 import org.junit.Test;
 
+import java.nio.charset.MalformedInputException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -68,7 +69,7 @@ public class ExampleUnitTest {
         String languageTag;
         final Double MAX = 1000000000000.0; //(12 Nullen)
         String muster = "#,##0.###";
-        Double doubleNumber = -123456789.123456789123456789;
+        Double doubleNumber = -123456789123456789.123456789123456789;
         //String stringNumber = doubleNumber.toString();
         String stringNumber = String.valueOf(doubleNumber);
 
@@ -85,6 +86,7 @@ public class ExampleUnitTest {
                 case "de-CH":
                     System.out.print(locales[i].getDisplayName() + " -> ");
                     System.out.print(locales[i].toLanguageTag() + " -> ");
+                    System.out.print(" -> (stringNumber: " + stringNumber + ") -> ");
 
                     //So erstellt man lokale Instance -< ABER: Warum ist form vom Typ DecimalFormat
                     form = NumberFormat.getInstance(locales[i]);
@@ -93,21 +95,18 @@ public class ExampleUnitTest {
                         //E-Notation
                         muster = "0.#########E0";
                     } else {
-                        System.out.print(" -> (stringNumber: " + stringNumber +") -> ");
                         muster = "#,##0.############";
                     }
 
                     if (form instanceof DecimalFormat) {
                         ((DecimalFormat) form).applyPattern(muster);
-                    }
 
-                    //Zeigt Muster/Pattern für die Landeskennung
-                    // (Für alle 3 Länder gleich, weil
-                    //      ","  steht für groupe seperator
-                    //      "."  steht für decimal separator
-                    //      "0"  steht für Ziffer (Pflicht)
-                    //      "#"  steht für Ziffer, aber nur wenn in Zahl vorhanden
-                    if (form instanceof DecimalFormat) {
+                        //Zeigt Muster/Pattern für die Landeskennung
+                        // (Für alle 3 Länder gleich, weil
+                        //      ","  steht für groupe seperator
+                        //      "."  steht für decimal separator
+                        //      "0"  steht für Ziffer (Pflicht)
+                        //      "#"  steht für Ziffer, aber nur wenn in Zahl vorhanden
                         System.out.print(": " + ((DecimalFormat) form).toPattern());
                     }
 
@@ -129,15 +128,54 @@ public class ExampleUnitTest {
 
     @Test
     public void test_format_calculator2() {
-        String zahl = "67547654747,8587658";
-        Locale locales = new Locale("de", "DE");
-        NumberFormat numberFormat = NumberFormat.getInstance(locales);
+        final int DIGITS = 12; // max. 12 echte Ziffern zzgl. E-Notation
+        final double MAX = Math.pow(10, DIGITS) - 1;
+        final double MIN = Math.pow(10, -(DIGITS - 1));
+        Double doubleNumber = 123456789123.12340;
+        //Double doubleNumber = 0.00000000012345678912345;
+        String stringNumber = doubleNumber.toString();
+        String valueOfNumber = String.valueOf(doubleNumber);
+        String pattern = "#,##0.##";
+        Double parseDouble;
 
-        System.out.print(zahl);
-
+        //Locale locales = new Locale("de", "DE");
+        Locale locales = new Locale("en", "US");
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(locales);
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
 
         System.out.println(locales.toString());
+        System.out.println("Original (Double)= " + doubleNumber);
+        System.out.println("Original (Double.toString)= " + stringNumber);
+        System.out.println("Original (String.valueOf)= " + valueOfNumber);
+
+        //Berechnung von Pattern -> Fallunterscheidung
+        System.out.println("Grenzen => MAX =  " + MAX + "   MIN = " + MIN);
+
+        if (doubleNumber > MAX || doubleNumber < MIN) {
+            //E-Notation
+            pattern = "0.";
+            for (int i = 1; i < DIGITS; i++) {
+                pattern += "#";
+            }
+            pattern += "E0";
+        } else {
+            //Normale Anzeige
+            pattern = "#,##0.###########";
+        }
+
+        decimalFormat.applyPattern(pattern);
+
+        System.out.println("pattern = " + decimalFormat.toPattern());
+
+        System.out.println("decimalFormat (Übergabe an Display)= " + decimalFormat.format(doubleNumber));
+
+        try {
+            parseDouble = decimalFormat.parse(decimalFormat.format(doubleNumber)).doubleValue();
+            System.out.println("parseDouble = " + parseDouble);
+        } catch (ParseException e) {
+        }
     }
+
 
     @Test
     public void test_arity() throws SyntaxException {
