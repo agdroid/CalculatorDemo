@@ -131,15 +131,18 @@ public class ExampleUnitTest {
         final int DIGITS = 12; // max. 12 echte Ziffern zzgl. E-Notation
         final double MAX = Math.pow(10, DIGITS) - 1;
         final double MIN = Math.pow(10, -(DIGITS - 1));
-        Double doubleNumber = 123456789123.12340;
+        Double doubleNumber = -123456789.123456789;
         //Double doubleNumber = 0.00000000012345678912345;
         String stringNumber = doubleNumber.toString();
         String valueOfNumber = String.valueOf(doubleNumber);
         String pattern = "#,##0.##";
         Double parseDouble;
+        int stellenVorKomma;
+        long wertVorKomma;
 
-        //Locale locales = new Locale("de", "DE");
-        Locale locales = new Locale("en", "US");
+
+        Locale locales = new Locale("de", "DE");
+        //Locale locales = new Locale("en", "US");
         NumberFormat numberFormat = NumberFormat.getNumberInstance(locales);
         DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
 
@@ -151,7 +154,7 @@ public class ExampleUnitTest {
         //Berechnung von Pattern -> Fallunterscheidung
         System.out.println("Grenzen => MAX =  " + MAX + "   MIN = " + MIN);
 
-        if (doubleNumber > MAX || doubleNumber < MIN) {
+        if (Math.abs(doubleNumber) > MAX || Math.abs(doubleNumber) < MIN) {
             //E-Notation
             pattern = "0.";
             for (int i = 1; i < DIGITS; i++) {
@@ -160,7 +163,20 @@ public class ExampleUnitTest {
             pattern += "E0";
         } else {
             //Normale Anzeige
-            pattern = "#,##0.###########";
+            wertVorKomma = doubleNumber.longValue();
+            stellenVorKomma = (int) Math.floor(Math.log10(Math.abs(wertVorKomma)))+1;
+
+            System.out.println("wertVorKomma =  " + wertVorKomma);
+            System.out.println("stellenVorKomma =  " + stellenVorKomma);
+
+            if (doubleNumber - wertVorKomma == 0 ) {
+                pattern = "#,##0";
+            } else {
+                pattern = "#,##0.";
+                for (int i = stellenVorKomma; i < DIGITS; i++) {
+                    pattern += "#";
+                }
+            }
         }
 
         decimalFormat.applyPattern(pattern);
