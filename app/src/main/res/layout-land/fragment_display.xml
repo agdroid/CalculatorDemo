@@ -18,7 +18,7 @@
             android:layout_height="72dp"
             android:layout_gravity="center_vertical|end"
             android:background="@color/colorAccent"
-            android:text="0.0"
+            android:text=""
             tools:text="569+965"/>
 
     </HorizontalScrollView>

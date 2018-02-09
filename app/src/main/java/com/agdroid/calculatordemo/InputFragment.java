@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+
 /**
  * Created by andre on 24.12.2017.
  */
@@ -35,6 +39,11 @@ public class InputFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        NumberFormat numberFormat = NumberFormat.getInstance();  //holt lokale Einstellungen
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+        DecimalFormatSymbols formatSymbols = decimalFormat.getDecimalFormatSymbols();
+        Character decimalSeparator = formatSymbols.getDecimalSeparator();
+
         View v = inflater.inflate(R.layout.fragment_input, container, false);
 
         btn_one = (Button) v.findViewById(R.id.btn_number_one);
@@ -66,6 +75,7 @@ public class InputFragment extends Fragment implements View.OnClickListener {
         btn_nine.setOnClickListener(this);
         btn_zero.setOnClickListener(this);
         btn_decimal.setOnClickListener(this);
+        btn_decimal.setText(decimalSeparator.toString());  //je nach Länderkennung
         btn_divide.setOnClickListener(this);
         btn_multiply.setOnClickListener(this);
         btn_subtrac.setOnClickListener(this);

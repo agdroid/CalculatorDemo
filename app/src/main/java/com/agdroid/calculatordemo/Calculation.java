@@ -124,8 +124,13 @@ public class Calculation {
      * See type comment for appendOperator
      */
     public void appendDecimal() {
+        NumberFormat numberFormat = NumberFormat.getInstance();  //holt lokale Einstellungen
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+        DecimalFormatSymbols formatSymbols = decimalFormat.getDecimalFormatSymbols();
+        Character decimalSeparator = formatSymbols.getDecimalSeparator();
+
         if (validateExpression(currentExpression)) {
-            currentExpression += ".";
+            currentExpression += decimalSeparator.toString();
             calculationResult.onExpressionChanged(currentExpression, true);
         }
     }
@@ -206,7 +211,9 @@ public class Calculation {
                 stellenVorKomma = (int) Math.floor(Math.log10(Math.abs(wertVorKomma))) + 1;
             }
 
-            if (doubleNumber - wertVorKomma == 0 ) {  //Ganze Zahlen Dezimaltrennzeichen
+            if (doubleNumber - wertVorKomma == 0) {  //Ganze Zahlen Dezimaltrennzeichen
+                pattern = "#,##0";
+            } else if (stellenVorKomma == DIGITS) {  //damit am Ende nicht der DecimalSeparator stehen bleibt
                 pattern = "#,##0";
             } else {
                 pattern = "#,##0.";
