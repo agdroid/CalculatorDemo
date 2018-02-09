@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ public class DisplayFragment extends Fragment implements CalculatorContract.Publ
 
     private CalculatorContract.ForwardDisplayInteractionToPresenter forwardInteraction;
     private TextView tv_display;
+    private HorizontalScrollView scv_display;
 
     public DisplayFragment() {
         // Required empty public constructor
@@ -37,12 +39,21 @@ public class DisplayFragment extends Fragment implements CalculatorContract.Publ
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_display, container, false);
         tv_display = (TextView) v.findViewById(R.id.tv_display);
+        scv_display = (HorizontalScrollView) v.findViewById(R.id.scv_display);
+
         return v;
     }
 
     @Override
     public void showResult(String result) {
         tv_display.setText(result);
+        //TODO: (Nachvollziehen) Setzt Cursor nach jeder Eingabe an den rechten Rand
+        scv_display.post(new Runnable() {
+            @Override
+            public void run() {
+                scv_display.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            }
+        });
     }
 
     @Override
@@ -58,7 +69,7 @@ public class DisplayFragment extends Fragment implements CalculatorContract.Publ
             String rowOne = savedInstanceState.getString(KEY_TV_DISPLAY, "Fehler");
             tv_display.setText(rowOne);
             forwardInteraction.onRestartDisplay(rowOne);
-        }
+         }
     }
 
     @Override
