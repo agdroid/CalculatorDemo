@@ -3,6 +3,12 @@ package com.agdroid.calculatordemo;
 import org.javia.arity.Symbols;
 import org.javia.arity.SyntaxException;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
+
 /**
  * Created by andre on 20.12.2017.
  * <p>
@@ -13,6 +19,7 @@ public class Calculation {
 
     private final Symbols symbols;
     private CalculationResult calculationResult;
+    private final int MAX_INPUT = 100;
 
     //Ausdruck der berechnet werden soll wie "45*10"
     private static String currentExpression;
@@ -81,7 +88,7 @@ public class Calculation {
         if (currentExpression.startsWith("0") && number.equals("0")) {
             calculationResult.onExpressionChanged("Invalid Input", false);
         } else {
-            if (currentExpression.length() <= 16) {
+            if (currentExpression.length() <= MAX_INPUT) {
                 currentExpression += number;
                 calculationResult.onExpressionChanged(currentExpression, true);
             } else {
@@ -132,8 +139,8 @@ public class Calculation {
     public void performEvaluation() {
         if (validateExpression(currentExpression)) {
             try {
-                Double result = symbols.eval(currentExpression);
-                currentExpression = formatExpression(Double.toString(result));
+                Double result = symbols.eval(prepareEvaluation(currentExpression));
+                currentExpression = formatExpression(result);
                 calculationResult.onExpressionChanged(currentExpression, true);
             } catch (SyntaxException e) {
                 calculationResult.onExpressionChanged("Invalid Input", false);
@@ -161,7 +168,7 @@ public class Calculation {
         } else if (expression.equals("")) {
             calculationResult.onExpressionChanged("Empty Expression", false);
             return false;
-        } else if (expression.length() > 16) {
+        } else if (expression.length() > MAX_INPUT) {
             calculationResult.onExpressionChanged("Expression Too Long", false);
             return false;
         } else {
@@ -171,13 +178,69 @@ public class Calculation {
 
 
     // Formatiert das Ergebnis für die Ausgabe
-    private String formatExpression(String s) {
-        //Entfernung Dezimalpunkt bei ganzen Zahlen
-        double d = Double.valueOf(s);
-        int i = (int) d;
-        if (d - i == 0) {
-            s = Integer.toString(i);
+    private String formatExpression(Double doubleNumber) {
+        final int DIGITS = 12; // max. 12 echte Ziffern zzgl. E-Notation
+        final double MAX = Math.pow(10, DIGITS) - 1;
+        final double MIN = Math.pow(10, -(DIGITS - 1));
+        String pattern = "";
+        int stellenVorKomma;
+        long wertVorKomma;
+
+        NumberFormat numberFormat = NumberFormat.getInstance();  //holt lokale Einstellungen
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+
+        //Berechnung von Pattern -> Fallunterscheidung
+        if (Math.abs(doubleNumber) > MAX || Math.abs(doubleNumber) < MIN) {
+            //E-Notation
+            pattern = "0.";
+            for (int i = 1; i < DIGITS; i++) {
+                pattern += "#";
+            }
+            pattern += "E0";
+        } else {
+            //Normale Anzeige
+            wertVorKomma = doubleNumber.longValue();
+            if (wertVorKomma == 0) {
+                stellenVorKomma = 1; // weil log10(0) nicht definiert ist...
+            } else {
+                stellenVorKomma = (int) Math.floor(Math.log10(Math.abs(wertVorKomma))) + 1;
+            }
+
+            if (doubleNumber - wertVorKomma == 0 ) {  //Ganze Zahlen Dezimaltrennzeichen
+                pattern = "#,##0";
+            } else {
+                pattern = "#,##0.";
+                for (int i = stellenVorKomma; i < DIGITS; i++) {
+                    pattern += "#";
+                }
+            }
         }
-        return s;
+
+        decimalFormat.applyPattern(pattern);
+        return decimalFormat.format(doubleNumber);
     }
+
+
+    // #1: Die Trennzeichen der Gruppierungen müssen vor Berechnung entfernt werden
+    // #2: Die Decimaltrennzeichen für arity durch einen "." ersetzten
+    public String prepareEvaluation(String expression) {
+
+        NumberFormat numberFormat = NumberFormat.getInstance();  //holt lokale Einstellungen
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+        DecimalFormatSymbols formatSymbols = decimalFormat.getDecimalFormatSymbols();
+
+        Character decimalSeparator = formatSymbols.getDecimalSeparator();
+        Character groupingSeparator = formatSymbols.getGroupingSeparator();
+
+        // #1 Alle Grouping Seperatoren löschen
+        expression = expression.replace(groupingSeparator.toString(), "");
+
+        // #2 decimalSeperator wenn erforderlich auf "." (US-Schreibweise) wegen arity setzen
+        if (!decimalSeparator.toString().equals(".")) {
+            expression = expression.replace(decimalSeparator.toString(), ".");
+        }
+
+        return expression;
+    }
+
 }

@@ -4,8 +4,8 @@ import org.javia.arity.Symbols;
 import org.javia.arity.SyntaxException;
 import org.junit.Test;
 
-import java.nio.charset.MalformedInputException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -164,12 +164,12 @@ public class ExampleUnitTest {
         } else {
             //Normale Anzeige
             wertVorKomma = doubleNumber.longValue();
-            stellenVorKomma = (int) Math.floor(Math.log10(Math.abs(wertVorKomma)))+1;
+            stellenVorKomma = (int) Math.floor(Math.log10(Math.abs(wertVorKomma))) + 1;
 
             System.out.println("wertVorKomma =  " + wertVorKomma);
             System.out.println("stellenVorKomma =  " + stellenVorKomma);
 
-            if (doubleNumber - wertVorKomma == 0 ) {
+            if (doubleNumber - wertVorKomma == 0) {
                 pattern = "#,##0";
             } else {
                 pattern = "#,##0.";
@@ -241,15 +241,45 @@ public class ExampleUnitTest {
     }
 
 
-    //So geht das nicht...
+    // #1: Die Trennzeichen der Gruppierungen müssen vor Berechnung entfernt werden
+    // #2: Die Decimaltrennzeichen für arity durch einen "." ersetzten
     @Test
-    public void test_calculation() {
-        Calculation calc = new Calculation();
-        String expression = "10/3";
-        String result;
+    public void test_prepareEvaluation() {
+        Symbols symbols = new Symbols();
 
-        calc.setCurrentExpression(expression);
-        calc.performEvaluation();
+        String expression = "15,989.123/1,234.1234";
+        //String expression = "15.989,123/1.234,1234";
+
+        //Locale locales = new Locale("de", "DE");
+        Locale locales = new Locale("en", "US");
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(locales);
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+        System.out.println(locales.toString());
+
+        DecimalFormatSymbols formatSymbols = decimalFormat.getDecimalFormatSymbols();
+
+        Character decimalSeparator = formatSymbols.getDecimalSeparator();
+        Character groupingSeparator = formatSymbols.getGroupingSeparator();
+        System.out.println("decimalSeparator = " + decimalSeparator);
+        System.out.println("groupingSeparator = " + groupingSeparator);
+
+        // #1 Alle Grouping Seperatoren löschen
+        expression = expression.replace(groupingSeparator.toString(), "");
+        System.out.println("expression ohne groupingSeparator = " + expression);
+
+        // #2 decimalSeperator wenn erforderlich auf "." (US-Schreibweise) wegen arity setzen
+        if (!decimalSeparator.toString().equals(".")) {
+            expression = expression.replace(decimalSeparator.toString(), ".");
+            System.out.println("expression mit US decimal Separator = " + expression);
+}
+
+        try {
+            double value = symbols.eval(expression);
+            System.out.println("Ergebnis Berechnung = " + value);
+        } catch (SyntaxException e) {
+            System.out.println("Fehlermeldung Berechnung=>" + e.toString());
+            e.printStackTrace();
+        }
     }
 
 
