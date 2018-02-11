@@ -132,10 +132,10 @@ public class InputFragment extends Fragment implements View.OnClickListener {
                 forwardInteraction.onDecimalClick();
                 break;
             case R.id.btn_divide:
-                forwardInteraction.onOperatorClick("/");
+                forwardInteraction.onOperatorClick("÷");
                 break;
             case R.id.btn_multiply:
-                forwardInteraction.onOperatorClick("*");
+                forwardInteraction.onOperatorClick("×");
                 break;
             case R.id.btn_subtrac:
                 forwardInteraction.onOperatorClick("-");

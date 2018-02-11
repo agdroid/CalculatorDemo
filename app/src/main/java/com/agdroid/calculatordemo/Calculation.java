@@ -6,8 +6,6 @@ import org.javia.arity.SyntaxException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
 
 /**
  * Created by andre on 20.12.2017.
@@ -106,9 +104,9 @@ public class Calculation {
      * "" - invalid
      *
      * @param operator one of:
-     *                 - "*"
-     *                 - "/"
-     *                 - "-"
+     *                 - "×" -> Für arity ersetzt später ersetzt mit "*"
+     *                 - "÷"
+     *                 - "-" -> Für arity später ersetzt mit "/"
      *                 - "+"
      */
     public void appendOperator(String operator) {
@@ -145,7 +143,7 @@ public class Calculation {
         if (validateExpression(currentExpression)) {
             try {
                 Double result = symbols.eval(prepareEvaluation(currentExpression));
-                currentExpression = formatExpression(result);
+                currentExpression = formatExpressionForDisplay(result);
                 calculationResult.onExpressionChanged(currentExpression, true);
             } catch (SyntaxException e) {
                 calculationResult.onExpressionChanged("Invalid Input", false);
@@ -163,8 +161,8 @@ public class Calculation {
      * @return
      */
     public boolean validateExpression(String expression) {
-        if (expression.endsWith("*") ||
-                expression.endsWith("/") ||
+        if (expression.endsWith("×") ||
+                expression.endsWith("÷") ||
                 expression.endsWith("-") ||
                 expression.endsWith("+")
                 ) {
@@ -183,7 +181,7 @@ public class Calculation {
 
 
     // Formatiert das Ergebnis für die Ausgabe
-    private String formatExpression(Double doubleNumber) {
+    private String formatExpressionForDisplay(Double doubleNumber) {
         final int DIGITS = 12; // max. 12 echte Ziffern zzgl. E-Notation
         final double MAX = Math.pow(10, DIGITS) - 1;
         final double MIN = Math.pow(10, -(DIGITS - 1));
@@ -239,13 +237,19 @@ public class Calculation {
         Character decimalSeparator = formatSymbols.getDecimalSeparator();
         Character groupingSeparator = formatSymbols.getGroupingSeparator();
 
-        // #1 Alle Grouping Seperatoren löschen
+        // #1 Alle Grouping Seperatoren löschen÷
         expression = expression.replace(groupingSeparator.toString(), "");
 
         // #2 decimalSeperator wenn erforderlich auf "." (US-Schreibweise) wegen arity setzen
         if (!decimalSeparator.toString().equals(".")) {
             expression = expression.replace(decimalSeparator.toString(), ".");
         }
+
+        // #3 Ersetz Divisionszeichen "÷" -> "/" für arity
+        expression = expression.replace("÷", "/");
+
+        // #3 Ersetz Multiplikationszeichen "×" -> "*" für arity
+        expression = expression.replace("×", "*");
 
         return expression;
     }

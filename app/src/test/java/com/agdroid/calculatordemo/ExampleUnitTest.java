@@ -205,6 +205,9 @@ public class ExampleUnitTest {
         try {
             double value = symbols.eval(expression);
             System.out.println("Wurzelzeichen -> \u221A ind Pi -> \u03c0");
+            System.out.println("Multiplikator -> \u00D7 ind Division -> \u00F7");
+            System.out.println("Character.UnicodeBlock.of = " + Character.UnicodeBlock.of('\u20ac'));
+            System.out.println("Character = " + Character.toString((char)0x2202));
             System.out.println("Ergebnis " + value);
         } catch (SyntaxException e) {
             System.out.println("Fehlermeldung =>" + e.toString());
