@@ -188,18 +188,24 @@ public class Calculation {
         String pattern = "";
         int stellenVorKomma;
         long wertVorKomma;
+        double doubleNumberABS = Math.abs(doubleNumber);
 
         NumberFormat numberFormat = NumberFormat.getInstance();  //holt lokale Einstellungen
         DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
 
         //Berechnung von Pattern -> Fallunterscheidung
-        if (Math.abs(doubleNumber) > MAX || Math.abs(doubleNumber) < MIN) {
-            //E-Notation
-            pattern = "0.";
-            for (int i = 1; i < DIGITS; i++) {
-                pattern += "#";
+        if (doubleNumberABS > MAX || doubleNumberABS < MIN) {
+            if (doubleNumberABS < 2 * Double.MIN_VALUE) {
+                //doubleNumber == 0
+                pattern = "0";
+            } else {
+                //E-Notation
+                pattern = "0.";
+                for (int i = 1; i < DIGITS; i++) {
+                    pattern += "#";
+                }
+                pattern += "E0";
             }
-            pattern += "E0";
         } else {
             //Normale Anzeige
             wertVorKomma = doubleNumber.longValue();
