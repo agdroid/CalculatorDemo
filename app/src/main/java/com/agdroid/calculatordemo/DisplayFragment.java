@@ -39,7 +39,7 @@ public class DisplayFragment extends Fragment implements CalculatorContract.Publ
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_display, container, false);
         tv_display = (TextView) v.findViewById(R.id.tv_display);
-        scv_display = (HorizontalScrollView) v.findViewById(R.id.scv_display);
+        scv_display = (HorizontalScrollView) v.findViewById(R.id.scv_display1);
 
         return v;
     }

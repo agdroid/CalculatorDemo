@@ -7,13 +7,13 @@
     tools:context="com.agdroid.calculatordemo.DisplayFragment">
 
     <HorizontalScrollView
-        android:id="@+id/scv_display"
+        android:id="@+id/scv_display1"
         android:layout_width="match_parent"
-        android:layout_height="144dp">
+        android:layout_height="88dp">
 
         <TextView
             android:id="@+id/tv_display"
-            style="@style/TextViewDisplay"
+            style="@style/TextViewDisplay1"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_vertical|end"
@@ -22,4 +22,21 @@
 
     </HorizontalScrollView>
 
+    <HorizontalScrollView
+        android:id="@+id/scv_display2"
+        android:layout_below="@id/scv_display1"
+        android:layout_alignLeft="@id/scv_display1"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <TextView
+            android:id="@+id/tv_display2"
+            style="@style/TextViewDisplay2"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical|end"
+            android:text="689+765"
+            tools:text="689+765"/>
+
+    </HorizontalScrollView>
 </RelativeLayout>

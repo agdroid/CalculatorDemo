@@ -7,13 +7,13 @@
     tools:context="com.agdroid.calculatordemo.DisplayFragment">
 
     <HorizontalScrollView
-        android:id="@+id/scv_display"
+        android:id="@+id/scv_display1"
         android:layout_width="match_parent"
         android:layout_height="96dp">
 
         <TextView
             android:id="@+id/tv_display"
-            style="@style/TextViewDisplay"
+            style="@style/TextViewDisplay1"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_vertical|end"
