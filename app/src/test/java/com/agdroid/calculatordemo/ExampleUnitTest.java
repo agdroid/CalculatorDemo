@@ -200,6 +200,7 @@ public class ExampleUnitTest {
         expression = "sqrt(4)";
         expression = "2.2e4";
         expression = "2345234.23*2";
+        expression = "2*.3*2";
         String s1 = "572049587675487124646.876458";
 
         try {

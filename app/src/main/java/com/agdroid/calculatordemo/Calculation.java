@@ -18,6 +18,7 @@ public class Calculation {
     private final Symbols symbols;
     private CalculationResult calculationResult;
     private final int MAX_INPUT = 100;
+    private boolean lastClickWasEnter = false;
 
     //Ausdruck der berechnet werden soll wie "45*10"
     private static String currentExpression;
@@ -54,7 +55,12 @@ public class Calculation {
      */
     public void deleteCharacter() {
         if (currentExpression.length() > 0) {
-            currentExpression = currentExpression.substring(0, currentExpression.length() - 1);
+            if (lastClickWasEnter) {
+                lastClickWasEnter = false;
+                currentExpression = "";  //Neue Rechnung anfangen
+            } else {
+                currentExpression = currentExpression.substring(0, currentExpression.length() - 1);
+            }
             calculationResult.onExpressionChanged(currentExpression, true);
         } else {
             calculationResult.onExpressionChanged("Invalid Input", false);
@@ -83,10 +89,15 @@ public class Calculation {
      * @param number
      */
     public void appendNumber(String number) {
+        //TODO: Nach "03" keine weitere Null eingeben zu dürfen ergibt keinen Sinn.
         if (currentExpression.startsWith("0") && number.equals("0")) {
             calculationResult.onExpressionChanged("Invalid Input", false);
         } else {
             if (currentExpression.length() <= MAX_INPUT) {
+                if (lastClickWasEnter) {
+                    lastClickWasEnter = false;
+                    currentExpression = "";  //Neue Rechnung anfangen
+                }
                 currentExpression += number;
                 calculationResult.onExpressionChanged(currentExpression, true);
             } else {
@@ -111,6 +122,7 @@ public class Calculation {
      */
     public void appendOperator(String operator) {
         if (validateExpression(currentExpression)) {
+            lastClickWasEnter = false;
             currentExpression += operator;
             calculationResult.onExpressionChanged(currentExpression, true);
         }
@@ -128,6 +140,10 @@ public class Calculation {
         Character decimalSeparator = formatSymbols.getDecimalSeparator();
 
         if (validateExpression(currentExpression)) {
+            if (lastClickWasEnter) {
+                lastClickWasEnter = false;
+                currentExpression = "";  //Neue Rechnung anfangen
+            }
             currentExpression += decimalSeparator.toString();
             calculationResult.onExpressionChanged(currentExpression, true);
         }
@@ -143,6 +159,7 @@ public class Calculation {
         if (validateExpression(currentExpression)) {
             try {
                 Double result = symbols.eval(prepareEvaluation(currentExpression));
+                lastClickWasEnter = true;
                 currentExpression = formatExpressionForDisplay(result);
                 calculationResult.onExpressionChanged(currentExpression, true);
             } catch (SyntaxException e) {
